@@ -2,6 +2,7 @@
 #define PI 3.14159265358979323846
 
 uniform vec2 uRes;
+uniform float uTime;
 
 in vec4 color;
 in vec4 vTexCoord;
@@ -54,17 +55,17 @@ float pNoise(vec2 p, int res){
  * Weight w should be in the range [0.0, 1.0]
  */
 float interpolate(float a0, float a1, float w) {
-     // You may want clamping by inserting:
-     //if (0.0 > w) return a0;
-     //if (1.0 < w) return a1;
-     
-     return (a1 - a0) * w + a0;
-     // Use this cubic interpolation [[Smoothstep]] instead, for a smooth appearance:
-     return (a1 - a0) * (3.0 - w * 2.0) * w * w + a0;
-     
-     // Use [[Smootherstep]] for an even smoother result with a second derivative equal to zero on boundaries:
-     //return (a1 - a0) * (x * (w * 6.0 - 15.0) * w * w *w + 10.0) + a0;
-     
+    /* // You may want clamping by inserting:
+     * if (0.0 > w) return a0;
+     * if (1.0 < w) return a1;
+     */
+    return (a1 - a0) * w + a0;
+    /* // Use this cubic interpolation [[Smoothstep]] instead, for a smooth appearance:
+     * return (a1 - a0) * (3.0 - w * 2.0) * w * w + a0;
+     *
+     * // Use [[Smootherstep]] for an even smoother result with a second derivative equal to zero on boundaries:
+     * return (a1 - a0) * (x * (w * 6.0 - 15.0) * w * w *w + 10.0) + a0;
+     */
 }
 
 /* Create random direction vector
@@ -117,20 +118,18 @@ float perlin(float x, float y) {
 }
 
 void main() {
-	float scale = 10; // the complexity of the noise
-	int ocataves = 4; //"layers" of perlin nose for more realistic looking waves
-	float amplitude = 2; // height of the waves
-	float freq = 1; //
-	float persistance = .2; // 0-1
-	float lacunarity = 2; // > 1
+	float scale = 10;
+	int ocataves = 4;
+	float amplitude = 1;
+	float freq = 1;
+	float persistance = .5;
+	float lacunarity = 2;
 	int seed = 100;
 	float height;
 	
 	for(int i = 0; i < ocataves; i++){
-		vec2 sampleXY = vTexCoord.xy * scale * freq + seed;
-		float perlinValue = pNoise(sampleXY, 3);
-		//float perlinValue = perlin(sampleXY.x, sampleXY.y);
-		//float perlinValue = perlin(vTexCoord.x*scale, vTexCoord.y*scale);
+		vec2 sampleXY = vTexCoord.xy * scale * freq + seed +(uTime * .5) ; //+(uTime * .5)
+		float perlinValue = perlin(sampleXY.x, sampleXY.y) ;
 		height += perlinValue * amplitude;
 		
 		amplitude *= persistance;
@@ -138,6 +137,6 @@ void main() {
 	}
 	
 
-	height = mix(1.0, -1.0, height); // trying to map the height to 1.0 to -1.0
-    outHeight = height; //ouputs a float
+	//height = mix(1.0, -1.0, height);
+   outHeight = height;
 }
