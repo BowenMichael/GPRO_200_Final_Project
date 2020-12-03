@@ -1,0 +1,143 @@
+#version 450
+#define PI 3.14159265358979323846
+
+uniform vec2 uRes;
+
+in vec4 color;
+in vec4 vTexCoord;
+out float outHeight;
+
+
+//Source: https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+float rand(vec2 c){
+	return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+float noise(vec2 p, float freq ){
+	float unit = uRes.x/freq;
+	vec2 ij = floor(p/unit);
+	vec2 xy = mod(p,unit)/unit;
+	//xy = 3.*xy*xy-2.*xy*xy*xy;
+	xy = .5*(1.-cos(PI*xy));
+	float a = rand((ij+vec2(0.,0.)));
+	float b = rand((ij+vec2(1.,0.)));
+	float c = rand((ij+vec2(0.,1.)));
+	float d = rand((ij+vec2(1.,1.)));
+	float x1 = mix(a, b, xy.x);
+	float x2 = mix(c, d, xy.x);
+	return mix(x1, x2, xy.y);
+}
+
+float pNoise(vec2 p, int res){
+	float persistance = .5;
+	float n = 0.;
+	float normK = 0.;
+	float f = 4.;
+	float amp = 1.;
+	int iCount = 0;
+	for (int i = 0; i<50; i++){
+		n+=amp*noise(p, f);
+		f*=5.;
+		normK+=amp;
+		amp*=persistance;
+		if (iCount == res) break;
+		iCount++;
+	}
+	float nf = n/normK;
+	return nf*nf*nf*nf;
+}
+
+//Perlin Noise Function from: https://en.wikipedia.org/wiki/Perlin_noise
+
+
+/* Function to linearly interpolate between a0 and a1
+ * Weight w should be in the range [0.0, 1.0]
+ */
+float interpolate(float a0, float a1, float w) {
+     // You may want clamping by inserting:
+     //if (0.0 > w) return a0;
+     //if (1.0 < w) return a1;
+     
+     return (a1 - a0) * w + a0;
+     // Use this cubic interpolation [[Smoothstep]] instead, for a smooth appearance:
+     return (a1 - a0) * (3.0 - w * 2.0) * w * w + a0;
+     
+     // Use [[Smootherstep]] for an even smoother result with a second derivative equal to zero on boundaries:
+     //return (a1 - a0) * (x * (w * 6.0 - 15.0) * w * w *w + 10.0) + a0;
+     
+}
+
+/* Create random direction vector
+ */
+vec2 randomGradient(int ix, int iy) {
+    // Random float. No precomputed gradients mean this works for any number of grid coordinates
+    float random = 2920.f * sin(ix * 21942.f + iy * 171324.f + 8912.f) * cos(ix * 23157.f * iy * 217832.f + 9758.f);
+    return vec2 (cos(random),sin(random));
+}
+
+// Computes the dot product of the distance and gradient vectors.
+float dotGridGradient(int ix, int iy, float x, float y) {
+    // Get gradient from integer coordinates
+    vec2 gradient = randomGradient(ix, iy);
+
+    // Compute the distance vector
+    float dx = x - float(ix);
+    float dy = y - float(iy);
+
+    // Compute the dot-product
+    return (dx*gradient.x + dy*gradient.y);
+}
+
+// Compute Perlin noise at coordinates x, y
+float perlin(float x, float y) {
+    // Determine grid cell coordinates
+    int x0 = int(x);
+    int x1 = x0 + 1;
+    int y0 = int(y);
+    int y1 = y0 + 1;
+
+    // Determine interpolation weights
+    // Could also use higher order polynomial/s-curve here
+    float sx = x - float(x0);
+    float sy = y - float(y0);
+
+    // Interpolate between grid point gradients
+    float n0, n1, ix0, ix1, value;
+
+    n0 = dotGridGradient(x0, y0, x, y);
+    n1 = dotGridGradient(x1, y0, x, y);
+    ix0 = interpolate(n0, n1, sx);
+
+    n0 = dotGridGradient(x0, y1, x, y);
+    n1 = dotGridGradient(x1, y1, x, y);
+    ix1 = interpolate(n0, n1, sx);
+
+    value = interpolate(ix0, ix1, sy);
+    return value;
+}
+
+void main() {
+	float scale = 10; // the complexity of the noise
+	int ocataves = 4; //"layers" of perlin nose for more realistic looking waves
+	float amplitude = 2; // height of the waves
+	float freq = 1; //
+	float persistance = .2; // 0-1
+	float lacunarity = 2; // > 1
+	int seed = 100;
+	float height;
+	
+	for(int i = 0; i < ocataves; i++){
+		vec2 sampleXY = vTexCoord.xy * scale * freq + seed;
+		float perlinValue = pNoise(sampleXY, 3);
+		//float perlinValue = perlin(sampleXY.x, sampleXY.y);
+		//float perlinValue = perlin(vTexCoord.x*scale, vTexCoord.y*scale);
+		height += perlinValue * amplitude;
+		
+		amplitude *= persistance;
+		freq *= lacunarity;
+	}
+	
+
+	height = mix(1.0, -1.0, height); // trying to map the height to 1.0 to -1.0
+    outHeight = height; //ouputs a float
+}
