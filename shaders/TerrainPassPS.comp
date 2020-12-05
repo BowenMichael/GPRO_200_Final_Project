@@ -1,0 +1,16 @@
+#version 450
+
+layout (location = 1) uniform sampler2D uTex1;
+
+//Varyings
+in vec4 vColor;
+in vec4 vTexCoord;
+
+//output
+out vec4 rtFragColor;
+
+void main(){
+	//rtFragColor = texture(uTex1, vTexCoord.xz*.1 + .45);
+	rtFragColor = vColor;
+	//rtFragColor = vec4(1.0);
+}

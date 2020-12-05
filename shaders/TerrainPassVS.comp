@@ -1,0 +1,29 @@
+#version 450
+
+//Unifrom
+uniform mat4 uMatView;
+uniform mat4 uMatViewProj;
+uniform mat4 uMatGeo;
+uniform float uTime;
+uniform sampler2D uTex;
+
+//attributes
+layout (location = 0) in vec4 aPos;
+
+//Varyings
+out vec4 vColor;
+out vec4 vTexCoord;
+
+void main(){
+	//Normal Pipeline
+	vec4 pos_world = uMatGeo * aPos;
+	vec4 pos_camera = uMatView * pos_world;
+	vec4 pos_clip = uMatViewProj * pos_world;
+  	gl_Position =  pos_clip;
+  	
+  	float height = texture(uTex, aPos.xz * .1 + .45).x  ;
+  	gl_Position = vec4(gl_Position.x, gl_Position.y + height , gl_Position.z, gl_Position.w);
+  	vColor = vec4(height);
+  	vTexCoord = aPos *.5 + .5;
+  	
+}

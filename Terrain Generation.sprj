@@ -30,8 +30,8 @@
 			<macros />
 		</pass>
 		<pass name="TerrainPass" type="shader" active="true">
-			<shader type="vs" path="..\..\..\..\..\Shadered\SHADERed\TerrainPassVS.comp" entry="main" />
-			<shader type="ps" path="..\..\..\..\..\Shadered\SHADERed\TerrainPassPS.comp" entry="main" />
+			<shader type="vs" path="shaders\TerrainPassVS.comp" entry="main" />
+			<shader type="ps" path="shaders\TerrainPassPS.comp" entry="main" />
 			<inputlayout>
 				<item value="Position" semantic="POSITION" />
 				<item value="Normal" semantic="NORMAL" />
@@ -71,11 +71,11 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="gTerrain" item="pipe" />
-		<entry type="file" name="PerlinNoisePass" shader="vs" />
-		<entry type="file" name="PerlinNoisePass" shader="ps" />
+		<entry type="property" name="PerlinNoisePass" item="pipe" />
 		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="file" name="PerlinNoisePass" shader="vs" />
+		<entry type="file" name="PerlinNoisePass" shader="ps" />
 		<entry type="pinned" name="uViewMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
