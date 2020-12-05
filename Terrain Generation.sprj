@@ -39,8 +39,8 @@
 			</inputlayout>
 			<rendertexture />
 			<items>
-				<item name="gTerrain" type="model">
-					<filepath>obj\tesselatePlane.obj</filepath>
+				<item name="gTerrain 2" type="model">
+					<filepath>obj\256 Vertice plane.obj</filepath>
 					<grouponly>false</grouponly>
 				</item>
 			</items>
@@ -71,17 +71,17 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="PerlinNoisePass" item="pipe" />
-		<entry type="file" name="TerrainPass" shader="vs" />
-		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="property" name="TerrainPass" item="pipe" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
+		<entry type="file" name="TerrainPass" shader="vs" />
+		<entry type="file" name="TerrainPass" shader="ps" />
 		<entry type="pinned" name="uViewMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
-			<distance>45</distance>
-			<pitch>19</pitch>
-			<yaw>288</yaw>
+			<distance>5</distance>
+			<pitch>30</pitch>
+			<yaw>57</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
