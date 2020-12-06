@@ -3,7 +3,7 @@
 //Uniforms
 uniform mat4 uViewMat;
 uniform mat4 uViewProjMat;
-uniform mat4 uGeoMat;
+uniform mat4 uModelMat;
 
 //attribute
 layout (location = 0) in vec4 aPos;

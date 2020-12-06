@@ -22,10 +22,10 @@
 			<itemvalues />
 			<variables>
 				<variable type="float4x4" name="uViewMat" system="View" />
-				<variable type="float4x4" name="uGeoMat" system="GeometryTransform" />
 				<variable type="float4x4" name="uViewProjMat" system="ViewProjection" />
 				<variable type="float2" name="uRes" system="ViewportSize" />
 				<variable type="float" name="uTime" system="Time" />
+				<variable type="float4x4" name="uModelMat" system="GeometryTransform" />
 			</variables>
 			<macros />
 		</pass>
@@ -42,13 +42,14 @@
 				<item name="gTerrain 2" type="model">
 					<filepath>obj\256 Vertice plane.obj</filepath>
 					<grouponly>false</grouponly>
+					<y>-0.258737445</y>
 				</item>
 			</items>
 			<itemvalues />
 			<variables>
 				<variable type="float4x4" name="uMatView" system="View" />
 				<variable type="float4x4" name="uMatViewProj" system="ViewProjection" />
-				<variable type="float4x4" name="uMatGeo" system="GeometryTransform" />
+				<variable type="float4x4" name="uMatModel" system="GeometryTransform" />
 				<variable type="float" name="uTime" system="Time" />
 				<variable type="int" name="uTex">
 					<row>
@@ -72,16 +73,16 @@
 	<cameras />
 	<settings>
 		<entry type="property" name="TerrainPass" item="pipe" />
+		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
-		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="TerrainPass" shader="ps" />
 		<entry type="pinned" name="uViewMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
 			<distance>5</distance>
-			<pitch>30</pitch>
-			<yaw>57</yaw>
+			<pitch>22</pitch>
+			<yaw>60</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
