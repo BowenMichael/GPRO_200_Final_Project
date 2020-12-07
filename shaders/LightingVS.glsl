@@ -1,16 +1,13 @@
 #version 450
 
-//Unifrom
-uniform mat4 uMatView;
-uniform mat4 uMatViewProj;
+//Uniforms
+uniform mat4 uViewMat;
 uniform mat4 uProjMat;
-uniform mat4 uMatModel;
-uniform float uTime;
-uniform sampler2D uTex;
-uniform sampler2D uTex1;
+uniform mat4 uViewProjMat;
+uniform mat4 uModelMat;
 
-//attributes
-layout (location = 0) in vec4 aPos;
+//attribute
+layout (location = 0) in vec4 aPosition;
 layout (location = 1) in vec3 aNormal;
 
 //varying
@@ -20,25 +17,24 @@ out vec4 vPosition;
 out vec4 vDiffuseColor;
 out vec4 vSpecularColor;
 out vec4 vTexCoord;
-out vec4 vCameraPos;
+out vec4 vCameraPosition;
 out mat4 vMat;
 
-void main(){
-
-	//Position Pipeline
-	vec4 pos_world = uMatModel * aPos;
-	vec4 pos_camera = uMatView * pos_world;
-	vec4 pos_clip = uMatViewProj * pos_world;
-  	gl_Position =  pos_clip;
+void main() {
+	//POSITION PIPELINE
+	mat4 modelViewMat = uModelMat * uViewMat; //Model View Matrix
+	vec4 pos_camera = modelViewMat * aPosition; //CameraPosition
+	vec4 pos_clip = uModelMat * uViewProjMat * aPosition; //way 1
+	gl_Position = pos_clip;
 
 	//Normal Pipeline
-	mat3 normalMat = transpose(inverse(mat3(uMatModel * uMatView)));
+	mat3 normalMat = transpose(inverse(mat3(modelViewMat)));
 	vec3 norm_camera = normalMat * aNormal;
 	//vec3 norm_camera = mat3(modelViewMat) * aNormal; //viewSpace Normal Blue Hue
 	vec3 norm_clip = mat3(uProjMat) * norm_camera;
 	
 	//Camera Pipline
-   mat4 modelMatInv = inverse(uMatModel);
+   mat4 modelMatInv = inverse(uModelMat);
    vec4 camera_camera = vec4(0.0);
    vec4 camera_object = modelMatInv * camera_camera;
    
@@ -49,11 +45,7 @@ void main(){
    vec4 specularColor = vec4(1.0);
    
 	//NDC
-    vTexCoord = aPos * .5 + .5;
-    
-    //
-    float height = texture(uTex, aPos.xz * .1 + .45).x  ;
-  	gl_Position = vec4(gl_Position.x, gl_Position.y + height , gl_Position.z, gl_Position.w); // adds the height to the y Position
+    vTexCoord = aPosition * .5 + .5;
     
     //____________________________________
 //PER_FRAGMENT, VIEW_SPACE   
@@ -61,25 +53,20 @@ void main(){
 	//Varyings
 	vNormal = vec4(norm_camera, 0.0);
 	vPosition = pos_camera;
-    vCameraPos = camera_camera;
-	vMat = uMatView;
+	vCameraPosition = camera_camera;
+	vMat = uViewMat;
 	
 //____________________________________
 //PER_FRAGMENT, Object_SPACE 
    
    //Varyings
    //vNormal = vec4(aNormal, 0.0);
-   //vPosition = aPos;
-   //vCameraPos = camera_object;
+   //vPosition = aPosition;
+   //vCameraPosition = camera_object;
    //vMat = modelMatInv;
 
 //___________________________________
 //COMMON VARYINGS
    	vDiffuseColor = diffuseColor;
 	vSpecularColor = specularColor;
-	  	
-  	
-  	
-  	//Other Variangs
-  	vColor =  mix(vec4(0.0, 0.0, 1.0, 1.0), vec4(0.0, 1.0, 0.0, 1.0), height); // texture(uTex,vTexCoord.xy);	
 }

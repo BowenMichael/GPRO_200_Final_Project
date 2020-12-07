@@ -17,7 +17,7 @@ in mat4 vMat;
 out vec4 rtFragColor;
 
 //Global variables
-const int maxLights = 1;
+const int maxLights = 5;
 float globalAmbientIntensity = .1;
 vec4 globalAmbientColor = vec4(1.0);
 
@@ -97,23 +97,23 @@ vec4 phongReflectance(in sLight light, in vec4 surface, in vec4 surfaceNorm, in 
 }
 
 void main() {
-	globalAmbientColor = vColor; //globalAmbientColor to a specific texture
+	//globalAmbientColor = texture(tex, vTexcoord.xy); //globalAmbientColor to a specific texture
 	
 	vec4 n = normalize(vNormal); //When vNormal is brought into pixel space the size is changed
 
    //Lighting init
    sLight lights[maxLights];
    int i = 0;
-   initPointLight(lights[0], vec3(0.0, 1.0,  1.0), vec4(1.0), 1.1);
-   //initPointLight(lights[1], vec3(0.0, 5.0,  5.0), vec4(1.0, 0.0, 0.0, 1.0), 5);
-   //initPointLight(lights[2], vec3(1.0, 5.0,  5.0), vec4(0.5, 0.5, 1.0, 1.0), 5);
+   initPointLight(lights[0], vec3(2.0, 0.0,  -2.0), vec4(1.0), 5.0);
+   initPointLight(lights[1], vec3(-2.0, 0.0,  -2.0), vec4(1.0, 0.0, 0.0, 1.0), 5.0);
+   initPointLight(lights[2], vec3(0.0, -2.0,  -2.0), vec4(0.5, 0.5, 1.0, 1.0), 5.0);
 
 
 //_______________________________
 //PHONG_REFLECTANCE
    
 	//Function
-	vec4 phongColor = vColor;
+	vec4 phongColor;
 	for(int i = 0; i < maxLights; i++)
 	{
 		//Creates a temporary sLight to give a point in the relevat space

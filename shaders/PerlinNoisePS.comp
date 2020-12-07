@@ -87,11 +87,11 @@ void main() {
 	float freq = 1; //length of the waves
 	float persistance = .5; //0-1
 	float lacunarity = 2; //<1
-	int seed = 100;
+	int seed = 98;
 	float height;
 	
 	for(int i = 0; i < ocataves; i++){
-		vec2 sampleXY = vTexCoord.xy * scale * freq + seed +(uTime * .5) ; //+(uTime * .5)
+		vec2 sampleXY = vTexCoord.xy * scale * freq + seed; //+ (uTime * .25) ; //+(uTime * .5)
 		float perlinValue = perlin(sampleXY.x, sampleXY.y) *.5 +.1 ;
 		height += perlinValue * amplitude;
 		

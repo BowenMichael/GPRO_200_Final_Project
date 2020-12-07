@@ -42,7 +42,14 @@
 				<item name="gTerrain 2" type="model">
 					<filepath>obj\256 Vertice plane.obj</filepath>
 					<grouponly>false</grouponly>
-					<y>-0.258737445</y>
+				</item>
+				<item name="plane" type="geometry">
+					<type>Plane</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<y>1.09957159</y>
+					<topology>TriangleList</topology>
 				</item>
 			</items>
 			<itemvalues />
@@ -61,6 +68,59 @@
 						<value>1</value>
 					</row>
 				</variable>
+				<variable type="float4x4" name="uProjMat" system="Projection" />
+			</variables>
+			<macros />
+		</pass>
+		<pass name="Lighting" type="shader" active="false">
+			<shader type="vs" path="shaders\LightingVS.glsl" entry="main" />
+			<shader type="ps" path="shaders\LightingPS.glsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture />
+			<items>
+				<item name="LFSQ" type="geometry">
+					<type>ScreenQuadNDC</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+			<variables>
+				<variable type="float4x4" name="uViewMat" system="View" />
+				<variable type="float4x4" name="uViewProjMat" system="ViewProjection" />
+				<variable type="float4x4" name="uModelMat" system="GeometryTransform" />
+				<variable type="float4x4" name="uProjMat">
+					<row>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</row>
+					<row>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</row>
+					<row>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</row>
+					<row>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+						<value>0</value>
+					</row>
+				</variable>
 			</variables>
 			<macros />
 		</pass>
@@ -69,20 +129,26 @@
 		<object type="rendertexture" name="PerlinPassRT" format="RGB" fsize="431,806" clear="true">
 			<bind slot="0" name="TerrainPass" />
 		</object>
+		<object type="rendertexture" name="SceneRT" fsize="444,806" clear="true">
+			<bind slot="0" name="Lighting" />
+		</object>
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="TerrainPass" item="pipe" />
+		<entry type="property" name="plane" item="pipe" />
 		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
 		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="file" name="Lighting" shader="vs" />
+		<entry type="file" name="Lighting" shader="ps" />
 		<entry type="pinned" name="uViewMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
+		<entry type="pinned" name="uProjMat" owner="Lighting" />
 		<entry type="camera" fp="false">
 			<distance>5</distance>
-			<pitch>22</pitch>
-			<yaw>60</yaw>
+			<pitch>23</pitch>
+			<yaw>30</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
