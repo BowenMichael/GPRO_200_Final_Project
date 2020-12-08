@@ -135,20 +135,15 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="plane" item="pipe" />
-		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
-		<entry type="file" name="TerrainPass" shader="ps" />
-		<entry type="file" name="Lighting" shader="vs" />
-		<entry type="file" name="Lighting" shader="ps" />
 		<entry type="pinned" name="uViewMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uProjMat" owner="Lighting" />
 		<entry type="camera" fp="false">
-			<distance>5</distance>
-			<pitch>23</pitch>
-			<yaw>30</yaw>
+			<distance>3</distance>
+			<pitch>30</pitch>
+			<yaw>161</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />

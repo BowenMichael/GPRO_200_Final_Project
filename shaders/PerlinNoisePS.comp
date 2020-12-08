@@ -91,7 +91,7 @@ void main() {
 	float height;
 	
 	for(int i = 0; i < ocataves; i++){
-		vec2 sampleXY = vTexCoord.xy * scale * freq + seed; //+ (uTime * .25) ; //+(uTime * .5)
+		vec2 sampleXY = vTexCoord.xy * scale * freq + seed+ (uTime * .25) ; //+(uTime * .5)
 		float perlinValue = perlin(sampleXY.x, sampleXY.y) *.5 +.1 ;
 		height += perlinValue * amplitude;
 		
