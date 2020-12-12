@@ -124,6 +124,30 @@
 			</variables>
 			<macros />
 		</pass>
+		<pass name="3DNoise" type="shader" active="true">
+			<shader type="vs" path="shaders\3DNoiseVS.glsl" entry="main" />
+			<shader type="ps" path="shaders\3DNoisePS.glsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture />
+			<items>
+				<item name="gFSQ" type="geometry">
+					<type>ScreenQuadNDC</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+			<variables>
+				<variable type="float" name="uTime" system="Time" />
+			</variables>
+			<macros />
+		</pass>
 	</pipeline>
 	<objects>
 		<object type="rendertexture" name="PerlinPassRT" format="RGB" fsize="431,806" clear="true">
@@ -137,13 +161,17 @@
 	<settings>
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
+		<entry type="file" name="TerrainPass" shader="vs" />
+		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="file" name="3DNoise" shader="vs" />
+		<entry type="file" name="3DNoise" shader="ps" />
 		<entry type="pinned" name="uViewMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uProjMat" owner="Lighting" />
 		<entry type="camera" fp="false">
-			<distance>3</distance>
-			<pitch>30</pitch>
-			<yaw>161</yaw>
+			<distance>15</distance>
+			<pitch>5</pitch>
+			<yaw>242</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
