@@ -1,10 +1,8 @@
 #version 450
 
-uniform float uTime;
+writeonly uniform image2D img_output;
 
-in vec2 vTexCoord;
-
-out vec4 rtFragColor;
+layout(local_size_x = 8, local_size_y = 8) in;
 
 vec2 random2(vec2 p)
 {
@@ -13,10 +11,13 @@ vec2 random2(vec2 p)
 
 void main()
 {
-	vec2 i_st = floor(vTexCoord);
-	vec2 f_st = fract(vTexCoord);
+	ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+	vec4 px = vec4(coord, 0.0, 1.0);
 	
-	vec3 color = vec3(1.0);
+	vec2 i_st = floor(coord);
+	vec2 f_st = fract(coord);
+	
+	float color = 1.0;
 	
 	
 	float m_dist = 1.0;
@@ -33,8 +34,9 @@ void main()
 		}
 	}
 	
-	color.r -= m_dist;
+	color -= m_dist;
 	
-	rtFragColor = vec4(color.r, 0.0, 0.0, 1.0);
-	//rtFragColor = vec4(fract(vTexCoord), 0.0, 1.0);
+	px = vec4(color, 0.0, 0.0, 1.0);
+	
+	imageStore(img_output, coord, px);
 }

@@ -2,8 +2,8 @@
 <project version="2">
 	<pipeline>
 		<pass name="PerlinNoisePass" type="shader" active="true">
-			<shader type="vs" path="shaders\PerlinNoiseVS.comp" entry="main" />
-			<shader type="ps" path="shaders\PerlinNoisePS.comp" entry="main" />
+			<shader type="vs" path="shaders\PerlinNoiseVS.glsl" entry="main" />
+			<shader type="ps" path="shaders\PerlinNoisePS.glsl" entry="main" />
 			<inputlayout>
 				<item value="Position" semantic="POSITION" />
 				<item value="Normal" semantic="NORMAL" />
@@ -30,8 +30,8 @@
 			<macros />
 		</pass>
 		<pass name="TerrainPass" type="shader" active="true">
-			<shader type="vs" path="shaders\TerrainPassVS.comp" entry="main" />
-			<shader type="ps" path="shaders\TerrainPassPS.comp" entry="main" />
+			<shader type="vs" path="shaders\TerrainPassVS.glsl" entry="main" />
+			<shader type="ps" path="shaders\TerrainPassPS.glsl" entry="main" />
 			<inputlayout>
 				<item value="Position" semantic="POSITION" />
 				<item value="Normal" semantic="NORMAL" />
@@ -133,8 +133,29 @@
 				<item value="Texcoord" semantic="TEXCOORD0" />
 			</inputlayout>
 			<rendertexture />
+			<items />
+			<itemvalues />
+			<variables>
+				<variable type="float" name="uTime" system="Time" />
+			</variables>
+			<macros />
+		</pass>
+		<pass name="WorleyCompute" type="compute" active="true">
+			<shader type="cs" path="shaders\WorleyCompute.comp" entry="main" />
+			<groupsize x="128" y="128" z="128" />
+			<macros />
+		</pass>
+		<pass name="testingNoise" type="shader" active="true">
+			<shader type="vs" path="shaders\testingNoiseVS.glsl" entry="main" />
+			<shader type="ps" path="shaders\testingNoisePS.glsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture />
 			<items>
-				<item name="gFSQ" type="geometry">
+				<item name="gndc" type="geometry">
 					<type>ScreenQuadNDC</type>
 					<width>1</width>
 					<height>1</height>
@@ -144,7 +165,11 @@
 			</items>
 			<itemvalues />
 			<variables>
-				<variable type="float" name="uTime" system="Time" />
+				<variable type="int" name="uTex">
+					<row>
+						<value>0</value>
+					</row>
+				</variable>
 			</variables>
 			<macros />
 		</pass>
@@ -156,22 +181,25 @@
 		<object type="rendertexture" name="SceneRT" fsize="444,806" clear="true">
 			<bind slot="0" name="Lighting" />
 		</object>
+		<object type="image3d" name="PeterWorley" width="128" height="128" depth="128" format="R32G32B32A32_FLOAT" />
+		<object type="image" name="Test" width="128" height="128" format="R32G32B32A32_FLOAT">
+			<bind slot="0" name="WorleyCompute" uav="1" />
+			<bind slot="0" name="testingNoise" uav="0" />
+		</object>
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="file" name="PerlinNoisePass" shader="vs" />
-		<entry type="file" name="PerlinNoisePass" shader="ps" />
-		<entry type="file" name="TerrainPass" shader="vs" />
-		<entry type="file" name="TerrainPass" shader="ps" />
-		<entry type="file" name="3DNoise" shader="vs" />
-		<entry type="file" name="3DNoise" shader="ps" />
+		<entry type="property" name="WorleyCompute" item="pipe" />
+		<entry type="file" name="testingNoise" shader="vs" />
+		<entry type="file" name="testingNoise" shader="ps" />
+		<entry type="file" name="WorleyCompute" shader="cs" />
 		<entry type="pinned" name="uViewMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uProjMat" owner="Lighting" />
 		<entry type="camera" fp="false">
-			<distance>15</distance>
-			<pitch>5</pitch>
-			<yaw>242</yaw>
+			<distance>3</distance>
+			<pitch>26</pitch>
+			<yaw>346</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
