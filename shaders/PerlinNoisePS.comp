@@ -81,13 +81,13 @@ float perlin(float x, float y) {
 }
 
 void main() {
-	float scale = 10; //Size of the waves
+	float scale = 2; //Size of the waves
 	int ocataves = 4; //number of combinations of waves
 	float amplitude = 1; //Height of the waves
 	float freq = 1; //length of the waves
 	float persistance = .5; //0-1
 	float lacunarity = 2; //<1
-	int seed = 98;
+	int seed = 98;//int(uTime);
 	float height;
 	
 	for(int i = 0; i < ocataves; i++){

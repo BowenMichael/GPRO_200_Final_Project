@@ -23,19 +23,25 @@ out vec4 vTexCoord;
 out vec4 vCameraPos;
 out mat4 vMat;
 
+vec4 calcNewNormal(vec3 p1, vec3 p2, vec3 p3){
+	vec4 newNormal = vec4(cross(p2 - p1, p3 - p1), 0.0);
+    //return newNormal;
+	return normalize(newNormal);
+}
+
 void main(){
 
 	//Position Pipeline
-	vec4 pos_world = uMatModel * aPos;
-	vec4 pos_camera = uMatView * pos_world;
-	vec4 pos_clip = uMatViewProj * pos_world;
-  	gl_Position =  pos_clip;
+	//vec4 pos_world = uMatModel * aPos;
+	//vec4 pos_camera = uMatView * pos_world;
+	//vec4 pos_clip = uMatViewProj * pos_world;
+  	//gl_Position =  pos_clip;
 
 	//Normal Pipeline
-	mat3 normalMat = transpose(inverse(mat3(uMatModel * uMatView)));
-	vec3 norm_camera = normalMat * aNormal;
+	//mat3 normalMat = transpose(inverse(mat3(uMatModel * uMatView)));
+	//vec3 norm_camera = normalMat * aNormal;
 	//vec3 norm_camera = mat3(modelViewMat) * aNormal; //viewSpace Normal Blue Hue
-	vec3 norm_clip = mat3(uProjMat) * norm_camera;
+	//vec3 norm_clip = mat3(uProjMat) * norm_camera;
 	
 	//Camera Pipline
    mat4 modelMatInv = inverse(uMatModel);
@@ -43,7 +49,7 @@ void main(){
    vec4 camera_object = modelMatInv * camera_camera;
    
    //Diffuse color
-    vec4 diffuseColor = vec4(0.5);
+    vec4 diffuseColor = vec4(.5);
    
    //Specular Color
    vec4 specularColor = vec4(1.0);
@@ -51,35 +57,99 @@ void main(){
 	//NDC
     vTexCoord = aPos * .5 + .5;
     
-    //
-    float height = texture(uTex, aPos.xz * .1 + .45).x  ;
-  	gl_Position = vec4(gl_Position.x, gl_Position.y + height , gl_Position.z, gl_Position.w); // adds the height to the y Position
+  	//Position Pipeline
+  	//height Calculation
+    //vec2 scaledPos = aPos.xz*.5 + .5;
+    float height =  texture(uTex, vTexCoord.xz).x;
+  	vec4 a = vec4(aPos.x, height , aPos.z, aPos.w); // adds the height to the y Position  
+	
+	vec4 pos_world = uMatModel * a;
+	vec4 pos_camera = uMatView * pos_world;
+	vec4 pos_clip = uMatViewProj * pos_world;
+  	gl_Position =  pos_clip;
+  	
+  	
+  	//normal calculation
+  	float lod = 1;
+  	vec2 res = textureSize(uTex, lod);
+  	
+  	//Grabs another height from around the sample
+  	   
+  	vec4 norm = vec4(0.0);
+  	//float inv256 = 1/256;
+	
+  	//for(float i = -1; i <= 1; i+=2){
+  	
+	  	vec2 posOfU = vec2(vTexCoord.x, vTexCoord.y + lod);
+		vec2 posOfD = vec2(vTexCoord.x, vTexCoord.y - lod);
+		vec2 posOfR = vec2(vTexCoord.x + lod, vTexCoord.y);
+		vec2 posOfL = vec2(vTexCoord.x - lod, vTexCoord.y);
+		float heightU = texture(uTex, posOfU).x; 
+		float heightD = texture(uTex, posOfD).x;  
+		float heightR = texture(uTex, posOfR).x; 
+		float heightL = texture(uTex, posOfL).x;
+  	
+  		//finds the point around the vetex with that height
+  		vec3 u = vec3(a.x, heightU, a.z + 1);  
+  		vec3 d = vec3(a.x, heightD, a.z - 1);
+  		vec3 r = vec3(a.x + 1,  heightR, a.z);  
+  		vec3 l = vec3(a.x - 1,  heightL, a.z);
+  		vec3 p = a.xyz;
+  		
+  		vec3 up = vec3(0, 1, height - heightU);
+  		vec3 lp = vec3(1, 0, height - heightL);
+  		vec3 pr = vec3(0, 1, height - heightR);
+  		vec3 pd = vec3(1, 0, height - heightD);  
+  		
+  		norm += vec4(cross(up, lp), 0.0);
+  		norm += vec4(cross(up, pr), 0.0);
+  		norm += vec4(cross(pd, lp), 0.0);
+  		norm += vec4(cross(pd, pr), 0.0);
+  		
+  	
+  		//Finds that normal
+  		//norm += calcNewNormal(a.xyz, u.xyz, l.xyz);  
+  		//norm += calcNewNormal(a.xyz, u.xyz, r.xyz);
+  		//norm += calcNewNormal(a.xyz, d.xyz, l.xyz);
+  		//norm += calcNewNormal(a.xyz, d.xyz, r.xyz);
+  		//vNormal = norm;
+  	//}
+	norm = normalize(vec4(2*(heightR-heightL), 2*(heightD-heightU), -4, 0.0));   
+	//norm = vec4(aNormal, 0.0);
+	//norm = vec4(2*(r-l), 2*(d-u), -4, 0.0); 
+  	mat3 normalMat = transpose(inverse(mat3(uMatModel * uMatView)));
+	vec3 norm_camera = normalMat * norm.xyz;
+	//norm = vec4(norm.x, -norm.y, norm.z, 0.0);
+  	//vNormal = normalize(vNormal);
+  	
+  	gl_Position = pos_clip;
     
     //____________________________________
 //PER_FRAGMENT, VIEW_SPACE   
 	
 	//Varyings
-	vNormal = vec4(norm_camera, 0.0);
-	vPosition = pos_camera;
-    vCameraPos = camera_camera;
-	vMat = uMatView;
+	//vNormal = vec4(norm_camera, 0.0);
+	//vPosition = pos_camera;
+    //vCameraPos = camera_camera;
+	//vMat = uMatView;
 	
 //____________________________________
 //PER_FRAGMENT, Object_SPACE 
    
    //Varyings
-   //vNormal = vec4(aNormal, 0.0);
-   //vPosition = aPos;
-   //vCameraPos = camera_object;
-   //vMat = modelMatInv;
+   vNormal = vec4(norm.xyz, 0.0); //vec4(norm.xyz, 0.0);
+   vPosition = aPos;
+   vCameraPos = camera_object;
+   vMat = modelMatInv;
 
 //___________________________________
 //COMMON VARYINGS
-   	vDiffuseColor = diffuseColor;
-	vSpecularColor = specularColor;
-	  	
-  	
-  	
-  	//Other Variangs
+
   	vColor =  mix(vec4(0.0, 0.0, 1.0, 1.0), vec4(0.0, 1.0, 0.0, 1.0), height); // texture(uTex,vTexCoord.xy);	
+	vColor = vec4(norm.xyz, 1.0);
+	//vColor = aPos;
+	//vColor = vec4(aNormal.xyz, 1.0);;
+	
+	vDiffuseColor = diffuseColor;
+	vSpecularColor = specularColor;
 }
