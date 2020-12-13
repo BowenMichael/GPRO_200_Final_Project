@@ -61,7 +61,7 @@ void main(){
   	//height Calculation
     //vec2 scaledPos = aPos.xz*.5 + .5;
     float height =  texture(uTex, vTexCoord.xz).x;
-  	vec4 a = vec4(aPos.x, height , aPos.z, aPos.w); // adds the height to the y Position  
+  	vec4 a = vec4(aPos.x, height  * .4, aPos.z, aPos.w); // adds the height to the y Position  
 	
 	vec4 pos_world = uMatModel * a;
 	vec4 pos_camera = uMatView * pos_world;
@@ -147,8 +147,8 @@ void main(){
 //___________________________________
 //COMMON VARYINGS
 
-  	vColor =  mix(vec4(0.0, 0.0, 1.0, 1.0), vec4(0.0, 1.0, 0.0, 1.0), height); // texture(uTex,vTexCoord.xy);	
-	vColor = vec4(norm.xyz, 1.0);
+  	vColor =  mix(vec4(0.1, 1.0, .3, 0.5), vec4(.9,.5,.1, .10), height); // texture(uTex,vTexCoord.xy);	
+	//vColor = vec4(norm.xyz, 1.0);
 	//vColor = aPos;
 	//vColor = vec4(aNormal.xyz, 1.0);;
 	
