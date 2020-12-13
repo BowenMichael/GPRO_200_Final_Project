@@ -6,7 +6,7 @@ uniform float uTime;
 
 in vec4 color;
 in vec4 vTexCoord;
-out float outHeight;
+out vec4 outNoise;
 
 
 //Aleternitave perlin function: https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
@@ -80,26 +80,39 @@ float perlin(float x, float y) {
     return value;
 }
 
-void main() {
+void fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout float height)
+{
 	float scale = 10; //Size of the waves
-	int ocataves = 4; //number of combinations of waves
-	float amplitude = 1; //Height of the waves
-	float freq = 1; //length of the waves
-	float persistance = .5; //0-1
-	float lacunarity = 2; //<1
 	int seed = 98;
+	float lacunarity = 2; //<1
+	float persistance = .5; //0-1
+	
+	vec2 sampleXY = vTexCoord.xy * scale * frequency + seed;
+	float perlinValue = perlin(sampleXY.x, sampleXY.y) *.5 +.1 ;
+	height += perlinValue * amplitude;
+		
+	amplitude *= persistance;
+	frequency *= lacunarity;
+}
+
+void main() {
+	
+	int ocataves = 8; //number of combinations of waves
+	float amplitude = 1; //Height of the waves
+	float freq = 1; //length of the waves	
+	
 	float height;
 	
-	for(int i = 0; i < ocataves; i++){
-		vec2 sampleXY = vTexCoord.xy * scale * freq + seed+ (uTime * .25) ; //+(uTime * .5)
-		float perlinValue = perlin(sampleXY.x, sampleXY.y) *.5 +.1 ;
-		height += perlinValue * amplitude;
-		
-		amplitude *= persistance;
-		freq *= lacunarity;
-	}
+	outNoise.x = perlin(vTexCoord.x * 10., vTexCoord.y * 10.) * 2.;
+	fbm(vTexCoord.xy, freq, amplitude, height);
+	fbm(vTexCoord.xy, freq, amplitude, height);
+	outNoise.y = height * 2.;
+	fbm(vTexCoord.xy, freq, amplitude, height);
+	fbm(vTexCoord.xy, freq, amplitude, height);
+	fbm(vTexCoord.xy, freq, amplitude, height);
+	fbm(vTexCoord.xy, freq, amplitude, height);
 	
 
 	//height = mix(1.0, -1.0, height);
-   outHeight = height*2;
+   outNoise.z = height*2;
 }

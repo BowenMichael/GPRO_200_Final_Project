@@ -26,6 +26,7 @@ out mat4 vMat;
 void main(){
 
 	//Position Pipeline
+	vec4 aPosTime = vec4(aPos.x, aPos.y, aPos.z + (uTime * 0.5), aPos.w);
 	vec4 pos_world = uMatModel * aPos;
 	vec4 pos_camera = uMatView * pos_world;
 	vec4 pos_clip = uMatViewProj * pos_world;
@@ -52,7 +53,7 @@ void main(){
     vTexCoord = aPos * .5 + .5;
     
     //
-    float height = texture(uTex, aPos.xz * .1 + .45).x  ;
+    float height = texture(uTex, aPosTime.xz * .1 + .45).z  ;
   	gl_Position = vec4(gl_Position.x, gl_Position.y + height , gl_Position.z, gl_Position.w); // adds the height to the y Position
     
     //____________________________________
