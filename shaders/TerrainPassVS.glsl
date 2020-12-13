@@ -14,7 +14,6 @@ layout (location = 0) in vec4 aPos;
 layout (location = 1) in vec3 aNormal;
 
 //varying
-out vec4 vColor;
 out vec4 vNormal;
 out vec4 vPosition;
 out vec4 vDiffuseColor;
@@ -22,11 +21,11 @@ out vec4 vSpecularColor;
 out vec4 vTexCoord;
 out vec4 vCameraPos;
 out mat4 vMat;
+out float vHeight;
 
 void main(){
 
 	//Position Pipeline
-	vec4 aPosTime = vec4(aPos.x, aPos.y, aPos.z + (uTime * 0.5), aPos.w);
 	vec4 pos_world = uMatModel * aPos;
 	vec4 pos_camera = uMatView * pos_world;
 	vec4 pos_clip = uMatViewProj * pos_world;
@@ -53,7 +52,8 @@ void main(){
     vTexCoord = aPos * .5 + .5;
     
     //
-    float height = texture(uTex, aPosTime.xz * .1 + .45).z  ;
+    vec4 aPosTime = vec4(vTexCoord.x, vTexCoord.y, vTexCoord.z + (uTime * 0.15), vTexCoord.w);
+    float height = texture(uTex, aPosTime.xz).z  ;
   	gl_Position = vec4(gl_Position.x, gl_Position.y + height , gl_Position.z, gl_Position.w); // adds the height to the y Position
     
     //____________________________________
@@ -82,5 +82,14 @@ void main(){
   	
   	
   	//Other Variangs
-  	vColor =  mix(vec4(0.0, 0.0, 1.0, 1.0), vec4(0.0, 1.0, 0.0, 1.0), height); // texture(uTex,vTexCoord.xy);	
+  	/*if(height > .20)
+  	{
+  		vColor = mix(vec4(.35, .33, .25, 1.0),vec4(1.0), height);
+  	}
+  	else
+  	{  
+  		vColor =  mix(vec4(0.0, 1.0, 0.0, 1.0), vec4(.38, .39, .42, 1.0), height); // texture(uTex,vTexCoord.xy);	
+	}
+	*/
+	vHeight = height;
 }

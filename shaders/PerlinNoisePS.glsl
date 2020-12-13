@@ -82,7 +82,7 @@ float perlin(float x, float y) {
 
 void fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout float height)
 {
-	float scale = 10; //Size of the waves
+	float scale = 2; //Size of the waves
 	int seed = 98;
 	float lacunarity = 2; //<1
 	float persistance = .5; //0-1
@@ -98,15 +98,15 @@ void fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout f
 void main() {
 	
 	int ocataves = 8; //number of combinations of waves
-	float amplitude = 1; //Height of the waves
+	float amplitude = 2; //Height of the waves
 	float freq = 1; //length of the waves	
 	
 	float height;
 	
-	outNoise.x = perlin(vTexCoord.x * 10., vTexCoord.y * 10.) * 2.;
+	outNoise.x = perlin(vTexCoord.x * 10., vTexCoord.y * 10.);
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
-	outNoise.y = height * 2.;
+	outNoise.y = height;
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
@@ -114,5 +114,5 @@ void main() {
 	
 
 	//height = mix(1.0, -1.0, height);
-   outNoise.z = height*2;
+   outNoise.z = height;
 }
