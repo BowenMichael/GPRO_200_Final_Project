@@ -70,8 +70,10 @@ void main(){
   	
   	
   	//normal calculation
-  	float lod = 1;
+  	int lod = 20;
   	vec2 res = textureSize(uTex, lod);
+  	float pixelSizeX = 1/ res.x;
+  	float pixelSizeY = 1/ res.y;
   	
   	//Grabs another height from around the sample
   	   
@@ -80,10 +82,10 @@ void main(){
 	
   	//for(float i = -1; i <= 1; i+=2){
   	
-	  	vec2 posOfU = vec2(vTexCoord.x, vTexCoord.y + lod);
-		vec2 posOfD = vec2(vTexCoord.x, vTexCoord.y - lod);
-		vec2 posOfR = vec2(vTexCoord.x + lod, vTexCoord.y);
-		vec2 posOfL = vec2(vTexCoord.x - lod, vTexCoord.y);
+	  	vec2 posOfU = vec2(vTexCoord.x, vTexCoord.y + pixelSizeX);
+		vec2 posOfD = vec2(vTexCoord.x, vTexCoord.y - pixelSizeX);
+		vec2 posOfR = vec2(vTexCoord.x + pixelSizeY, vTexCoord.y);
+		vec2 posOfL = vec2(vTexCoord.x - pixelSizeY, vTexCoord.y);
 		float heightU = texture(uTex, posOfU).x; 
 		float heightD = texture(uTex, posOfD).x;  
 		float heightR = texture(uTex, posOfR).x; 

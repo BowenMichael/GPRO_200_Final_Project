@@ -127,7 +127,7 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="gTerrain" item="pipe" />
+		<entry type="property" name="PerlinNoisePass" item="pipe" />
 		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="TerrainPass" shader="ps" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
@@ -136,9 +136,9 @@
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="pinned" name="uProjMat" owner="Lighting" />
 		<entry type="camera" fp="false">
-			<distance>4</distance>
-			<pitch>20</pitch>
-			<yaw>12</yaw>
+			<distance>5</distance>
+			<pitch>65</pitch>
+			<yaw>345</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
