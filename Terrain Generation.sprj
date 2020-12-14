@@ -43,7 +43,7 @@
 				<item name="gTerrain 2" type="model">
 					<filepath>obj\256 Vertice plane.obj</filepath>
 					<grouponly>false</grouponly>
-					<y>0.19024229</y>
+					<y>0.230718732</y>
 				</item>
 			</items>
 			<itemvalues />
@@ -137,9 +137,6 @@
 				</item>
 			</items>
 			<itemvalues />
-			<variables>
-				<variable type="float" name="uTime" system="Time" />
-			</variables>
 			<macros />
 		</pass>
 		<pass name="Clouds" type="shader" active="true">
@@ -209,14 +206,18 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="TerrainPass" item="pipe" />
+		<entry type="property" name="Clouds" item="pipe" />
 		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="file" name="CloudNoisePass" shader="vs" />
+		<entry type="file" name="CloudNoisePass" shader="ps" />
+		<entry type="file" name="Clouds" shader="vs" />
+		<entry type="file" name="Clouds" shader="ps" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
-			<distance>6</distance>
-			<pitch>12</pitch>
-			<yaw>268</yaw>
+			<distance>4</distance>
+			<pitch>0</pitch>
+			<yaw>325</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />

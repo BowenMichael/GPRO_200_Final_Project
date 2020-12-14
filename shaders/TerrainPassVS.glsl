@@ -1,6 +1,6 @@
 #version 450
 
-//Unifrom
+//Uniform
 uniform mat4 uMatView;
 uniform mat4 uMatViewProj;
 uniform mat4 uProjMat;
