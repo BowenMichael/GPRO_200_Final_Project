@@ -26,6 +26,7 @@
 				<variable type="float2" name="uRes" system="ViewportSize" />
 				<variable type="float" name="uTime" system="Time" />
 				<variable type="float4x4" name="uModelMat" system="GeometryTransform" />
+				<variable type="float2" name="mousePos" system="MousePosition" />
 			</variables>
 			<macros />
 		</pass>
@@ -208,17 +209,14 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="file" name="PerlinNoisePass" shader="vs" />
-		<entry type="file" name="PerlinNoisePass" shader="ps" />
-		<entry type="file" name="CloudNoisePass" shader="vs" />
-		<entry type="file" name="CloudNoisePass" shader="ps" />
-		<entry type="file" name="Clouds" shader="vs" />
-		<entry type="file" name="Clouds" shader="ps" />
+		<entry type="property" name="TerrainPass" item="pipe" />
+		<entry type="file" name="TerrainPass" shader="vs" />
+		<entry type="file" name="TerrainPass" shader="ps" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
-			<distance>4</distance>
-			<pitch>22</pitch>
-			<yaw>356</yaw>
+			<distance>2</distance>
+			<pitch>24</pitch>
+			<yaw>253</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />

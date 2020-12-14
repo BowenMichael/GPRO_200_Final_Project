@@ -12,6 +12,7 @@ in vec4 vSpecularColor;
 in vec4 vTexCoord;
 in vec4 vCameraPosition;
 in mat4 vMat;
+in float vHeight;
 
 //output
 out vec4 rtFragColor;
@@ -113,7 +114,24 @@ void main() {
 //PHONG_REFLECTANCE
    
 	//Function
-	vec4 phongColor = vColor;
+	float grassHeight = .3;
+  	float stoneHeight = .6;
+  	
+  	float weightGrass = 0;
+  	float weightStone = 0;
+  	//Colors
+  	if(vHeight <= stoneHeight){  
+  		weightGrass = 1;
+  		weightStone = 0;
+  		
+  	}
+  	if(vHeight > grassHeight && vHeight < stoneHeight ){  
+  		weightGrass = 0;
+  		weightStone = 1;
+  		
+  	}
+  	float weightSnow = 1.0 - weightGrass - weightStone;
+	vec4 phongColor = weightGrass * vec4(0.0, 1.0, 0.0, 1.0) + weightStone * vec4(vec3(.5), 1.0) + weightSnow * vec4(1.0);;
 	for(int i = 0; i < maxLights; i++)
 	{
 		//Creates a temporary sLight to give a point in the relevat space

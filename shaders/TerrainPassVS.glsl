@@ -24,6 +24,7 @@ out vec4 vSpecularColor;
 out vec4 vTexCoord;
 out vec4 vCameraPos;
 out mat4 vMat;
+out float vHeight;
 
  // http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts
   vec3 orthogonal(vec3 v) {
@@ -126,16 +127,9 @@ void main(){
    
    //Specular Color
    vec4 specularColor = vec4(1.0);
-   
-	//NDC
-   
-    
-    //
-   
-    
-    
+       
     //____________________________________
-//PER_FRAGMENT, VIEW_SPACE   
+	//PER_FRAGMENT, VIEW_SPACE   
 	
 	//Varyings
 	vNormal = vec4(norm_camera, 0.0);
@@ -143,8 +137,8 @@ void main(){
     vCameraPos = camera_camera;
 	vMat = uMatView;
 	
-//____________________________________
-//PER_FRAGMENT, Object_SPACE 
+	//____________________________________
+	//PER_FRAGMENT, Object_SPACE 
    
    //Varyings
    //vNormal = vec4(aNormal, 0.0);
@@ -175,7 +169,9 @@ void main(){
   		
   	}
   	float weightSnow = 1.0 - weightGrass - weightStone;
+  	
   	vColor =  weightGrass * vec4(0.0, 1.0, 0.0, 1.0) + weightStone * vec4(vec3(.5), 1.0) + weightSnow * vec4(1.0); // texture(uTex,vTexCoord.xy);	
+  	vHeight = height;
   	//vColor = vNormal;
 	//vColor = vec4(n.xyz, 1.0);
 }
