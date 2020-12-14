@@ -43,7 +43,11 @@
 				<item name="gTerrain 2" type="model">
 					<filepath>obj\256 Vertice plane.obj</filepath>
 					<grouponly>false</grouponly>
+<<<<<<< HEAD
 					<y>2.74181366e-05</y>
+=======
+					<y>0.230718732</y>
+>>>>>>> origin/Final
 				</item>
 			</items>
 			<itemvalues />
@@ -121,6 +125,30 @@
 			</variables>
 			<macros />
 		</pass>
+<<<<<<< HEAD
+=======
+		<pass name="CloudNoisePass" type="shader" active="true">
+			<shader type="vs" path="shaders\CloudNoisePassVS.glsl" entry="main" />
+			<shader type="ps" path="shaders\CloudNoisePassPS.glsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture name="WorleyNoiseRT" />
+			<items>
+				<item name="gFSQ" type="geometry">
+					<type>ScreenQuadNDC</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+			<macros />
+		</pass>
+>>>>>>> origin/Final
 		<pass name="Clouds" type="shader" active="true">
 			<shader type="vs" path="shaders\CloudsVS.glsl" entry="main" />
 			<shader type="ps" path="shaders\CloudsPS.glsl" entry="main" />
@@ -169,16 +197,30 @@
 	</objects>
 	<cameras />
 	<settings>
+<<<<<<< HEAD
 		<entry type="property" name="TerrainPass" item="pipe" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
+=======
+		<entry type="property" name="Clouds" item="pipe" />
+>>>>>>> origin/Final
 		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="file" name="CloudNoisePass" shader="vs" />
+		<entry type="file" name="CloudNoisePass" shader="ps" />
+		<entry type="file" name="Clouds" shader="vs" />
+		<entry type="file" name="Clouds" shader="ps" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
+<<<<<<< HEAD
 			<distance>5</distance>
 			<pitch>9</pitch>
 			<yaw>165</yaw>
+=======
+			<distance>4</distance>
+			<pitch>0</pitch>
+			<yaw>325</yaw>
+>>>>>>> origin/Final
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
