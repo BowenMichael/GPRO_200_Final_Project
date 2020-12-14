@@ -105,15 +105,15 @@ void main() {
    //Lighting init
    sLight lights[maxLights];
    int i = 0;
-   initPointLight(lights[0], vec3(0.0, 0.5, 0.0), vec4(1.0), 0.5);
+   initPointLight(lights[0], vec3(0.0, 0.5, 0.0), vec4(1.0), .5);
    //initPointLight(lights[1], vec3(0.0, 5.0,  5.0), vec4(1.0, 0.0, 0.0, 1.0), 5);
    //initPointLight(lights[2], vec3(1.0, 5.0,  5.0), vec4(0.5, 0.5, 1.0, 1.0), 5);
 
 
 //_______________________________
 //PHONG_REFLECTANCE
-   
-	//Function
+   	//Color Interpolation
+  	//Function
 	float grassHeight = .3;
   	float stoneHeight = .6;
   	
@@ -131,7 +131,7 @@ void main() {
   		
   	}
   	float weightSnow = 1.0 - weightGrass - weightStone;
-	vec4 phongColor = weightGrass * vec4(0.0, 1.0, 0.0, 1.0) + weightStone * vec4(vec3(.5), 1.0) + weightSnow * vec4(1.0);;
+	vec4 phongColor = weightGrass * vec4(0.0, 1.0, 0.0, 1.0) + weightStone * vec4(vec3(.5), 1.0) + weightSnow * vec4(1.0);
 	for(int i = 0; i < maxLights; i++)
 	{
 		//Creates a temporary sLight to give a point in the relevat space

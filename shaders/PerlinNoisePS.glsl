@@ -9,12 +9,12 @@ in vec4 color;
 in vec4 vTexCoord;
 out vec4 outNoise;
 
+//global vars
+bool toggleScale = true;
 
 //Aleternitave perlin function: https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
 
-//Perlin Noise Function from: https://en.wikipedia.org/wiki/Perlin_noise
-
-
+//Perlin Noise Function source: https://en.wikipedia.org/wiki/Perlin_noise
 /* Function to linearly interpolate between a0 and a1
  * Weight w should be in the range [0.0, 1.0]
  */
@@ -81,19 +81,25 @@ float perlin(float x, float y) {
     return value;
 }
 
+//called once per ocatve
 float fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout float height)
 {
-	float scale = 5 * (mousePos.y); //Size of the waves
-	int seed = 98;
-	float lacunarity = 2; //<1
-	float persistance = .5; //0-1
-	
-	vec2 sampleXY = vTexCoord.xy * scale * frequency + seed ;
-		 
-	 //original
+	float scale = 0;
+	if(toggleScale){ //toggles interactability
+		scale = 50 * (mousePos.y); //Size of the waves
+	}
+	else{
+		scale = 2;
+	}
+
+	int seed = 98; //each value has drastically diffrent results
+	float lacunarity = 2 ; // increasing amplitude<1
+	float persistance = .5; //decreasing lacunarity0-1
+	vec2 sampleXY = vTexCoord.xy * scale * frequency + seed ; //position to be sampled
+ 	//sampling
 	float perlinValue = perlin(sampleXY.x, sampleXY.y) *.5 +.1 ;
 	height += perlinValue * amplitude;
-		
+	//incrementing amplitude and frequency	
 	amplitude *= persistance;
 	frequency *= lacunarity;
 	return height;
@@ -107,10 +113,12 @@ void main() {
 	
 	float height;
 	
+	//Cloud height
 	outNoise.x = perlin(vTexCoord.x * 10., vTexCoord.y * 10.) * 2.;
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	outNoise.y = height * 2.;
+	//four octaves for the  terrain height
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
