@@ -98,13 +98,13 @@ vec4 phongReflectance(in sLight light, in vec4 surface, in vec4 surfaceNorm, in 
 
 void main() {
 	globalAmbientColor = vColor; //globalAmbientColor to a specific texture
-	
+	rtFragColor = globalAmbientColor;
 	vec4 n = normalize(vNormal); //When vNormal is brought into pixel space the size is changed
 
    //Lighting init
    sLight lights[maxLights];
    int i = 0;
-   initPointLight(lights[0], vec3(0.0, 1.0,  0.0), vec4(1.0), 1.1);
+   initPointLight(lights[0], vec3(0.0, 1.0,  0.0), vec4(1.0), 1.0);
    //initPointLight(lights[1], vec3(0.0, 5.0,  5.0), vec4(1.0, 0.0, 0.0, 1.0), 5);
    //initPointLight(lights[2], vec3(1.0, 5.0,  5.0), vec4(0.5, 0.5, 1.0, 1.0), 5);
 
@@ -126,5 +126,5 @@ void main() {
 
 
    //PER_FRAGMENT Render
-   rtFragColor = phongColor; 
+   //rtFragColor = phongColor; 
 }
