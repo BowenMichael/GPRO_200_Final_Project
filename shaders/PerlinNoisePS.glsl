@@ -3,7 +3,6 @@
 
 uniform vec2 uRes;
 uniform float uTime;
-uniform vec2 mousePos;
 
 in vec4 color;
 in vec4 vTexCoord;
@@ -81,36 +80,33 @@ float perlin(float x, float y) {
     return value;
 }
 
-float fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout float height)
+void fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout float height)
 {
-	float scale = 5 * (mousePos.y); //Size of the waves
+	float scale = 2; //Size of the waves
 	int seed = 98;
 	float lacunarity = 2; //<1
 	float persistance = .5; //0-1
 	
-	vec2 sampleXY = vTexCoord.xy * scale * frequency + seed ;
-		 
-	 //original
+	vec2 sampleXY = vTexCoord.xy * scale * frequency + seed;
 	float perlinValue = perlin(sampleXY.x, sampleXY.y) *.5 +.1 ;
 	height += perlinValue * amplitude;
 		
 	amplitude *= persistance;
 	frequency *= lacunarity;
-	return height;
 }
 
 void main() {
 	
 	int ocataves = 8; //number of combinations of waves
-	float amplitude = 1; //Height of the waves
+	float amplitude = 2; //Height of the waves
 	float freq = 1; //length of the waves	
 	
 	float height;
 	
-	outNoise.x = perlin(vTexCoord.x * 10., vTexCoord.y * 10.) * 2.;
+	outNoise.x = perlin(vTexCoord.x * 10., vTexCoord.y * 10.);
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
-	outNoise.y = height * 2.;
+	outNoise.y = height;
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
 	fbm(vTexCoord.xy, freq, amplitude, height);
@@ -118,5 +114,5 @@ void main() {
 	
 
 	//height = mix(1.0, -1.0, height);
-   outNoise.z = height*2;
+   outNoise.z = height;
 }
