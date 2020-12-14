@@ -38,8 +38,8 @@ void main()
 	// Cloud is just a float since it
 	float cloud = 0.;
 	// Samples from two textures, one of which at different speeds
-	vec4 cloudsHorizontal = texture(uTex, vec2(vTexCoord.x, vTexCoord.y - 0.01 * uTime));
-	vec4 cloudsShape = texture(uTex2, vec2(vTexCoord.x, vTexCoord.y - 0.02 * uTime));
+	vec4 cloudsHorizontal = texture(uTex, vec2(vTexCoord.x, vTexCoord.y - 0.02 * uTime));
+	vec4 cloudsShape = texture(uTex2, vec2(vTexCoord.x, vTexCoord.y - 0.04 * uTime));
 	
 	// The idea of weighted noise comes from Inigo Quilez' 2D dynamic clouds
 	//		Link: https://iquilezles.untergrund.net/www/articles/dynclouds/dynclouds.htm
