@@ -43,7 +43,7 @@
 				<item name="gTerrain 2" type="model">
 					<filepath>obj\256 Vertice plane.obj</filepath>
 					<grouponly>false</grouponly>
-					<y>2.74181366e-05</y>
+					<y>0.433778286</y>
 				</item>
 			</items>
 			<itemvalues />
@@ -51,7 +51,6 @@
 				<variable type="float4x4" name="uMatView" system="View" />
 				<variable type="float4x4" name="uMatViewProj" system="ViewProjection" />
 				<variable type="float4x4" name="uMatModel" system="GeometryTransform" />
-				<variable type="float4x4" name="uProjMat" system="Projection" />
 				<variable type="float" name="uTime" system="Time" />
 				<variable type="int" name="uTex">
 					<row>
@@ -63,11 +62,10 @@
 						<value>1</value>
 					</row>
 				</variable>
+				<variable type="float4x4" name="uProjMat" system="Projection" />
 				<variable type="float2" name="mousePos" system="MousePosition" />
 			</variables>
-			<macros>
-				<define name="toggleScale" active="true">false</define>
-			</macros>
+			<macros />
 		</pass>
 		<pass name="Lighting" type="shader" active="false">
 			<shader type="vs" path="shaders\LightingVS.glsl" entry="main" />
@@ -121,6 +119,27 @@
 			</variables>
 			<macros />
 		</pass>
+		<pass name="CloudNoisePass" type="shader" active="true">
+			<shader type="vs" path="shaders\CloudNoisePassVS.glsl" entry="main" />
+			<shader type="ps" path="shaders\CloudNoisePassPS.glsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture name="WorleyNoiseRT" />
+			<items>
+				<item name="gFSQ" type="geometry">
+					<type>ScreenQuadNDC</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+			<macros />
+		</pass>
 		<pass name="Clouds" type="shader" active="true">
 			<shader type="vs" path="shaders\CloudsVS.glsl" entry="main" />
 			<shader type="ps" path="shaders\CloudsPS.glsl" entry="main" />
@@ -139,7 +158,18 @@
 					<scaleX>2</scaleX>
 					<scaleY>2</scaleY>
 					<pitch>4.71238899</pitch>
-					<y>1.87422669</y>
+					<y>1.22555459</y>
+					<topology>TriangleList</topology>
+				</item>
+				<item name="CloudsPlaneTop" type="geometry">
+					<type>Plane</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<scaleX>2</scaleX>
+					<scaleY>2</scaleY>
+					<pitch>1.57079637</pitch>
+					<y>1.22599995</y>
 					<topology>TriangleList</topology>
 				</item>
 			</items>
@@ -154,6 +184,11 @@
 				<variable type="float4x4" name="uViewMat" system="View" />
 				<variable type="float4x4" name="uModelMat" system="GeometryTransform" />
 				<variable type="float" name="uTime" system="Time" />
+				<variable type="int" name="uTex2">
+					<row>
+						<value>0</value>
+					</row>
+				</variable>
 			</variables>
 			<macros />
 		</pass>
@@ -166,20 +201,24 @@
 		<object type="rendertexture" name="SceneRT" fsize="444,806" clear="true">
 			<bind slot="0" name="Lighting" />
 		</object>
+		<object type="rendertexture" name="WorleyNoiseRT" fsize="637,646" clear="true">
+			<bind slot="1" name="Clouds" />
+		</object>
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="TerrainPass" item="pipe" />
+		<entry type="property" name="Clouds" item="pipe" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
-		<entry type="file" name="Clouds" shader="vs" />
-		<entry type="file" name="Clouds" shader="ps" />
+		<entry type="file" name="CloudNoisePass" shader="vs" />
+		<entry type="file" name="CloudNoisePass" shader="ps" />
 		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="file" name="Clouds" shader="ps" />
 		<entry type="camera" fp="false">
-			<distance>5</distance>
-			<pitch>33</pitch>
-			<yaw>132</yaw>
+			<distance>4</distance>
+			<pitch>42</pitch>
+			<yaw>359</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
