@@ -42,16 +42,19 @@ void main(){
   	vec2 res = textureSize(uTex, lod);
   	float sampleSizeX = 1/res.x;
   	float sampleSizeY = 1/res.y;
+  	 vTexCoord = aPos * .5 + .5;
   	
 	//Position Pipeline
 	mat4 MVP = uMatModel * uMatViewProj;
 	//Position to sample the height map 
-	vec2 posSample = vec2(aPos.x, aPos.z + (uTime * .5)); //in object space
+	vec2 posSample = vec2(vTexCoord.x, vTexCoord.z + (uTime * 0)); //in object space
 	//Distorted Position
 	float height = texture(uTex, posSample).z;
-	vec4 distPos = vec4(posSample.x, height, posSample.y, 1.0);
+	vec4 pos_camera = uMatModel * uMatView * aPos;
+	vec4 pos_clip = MVP * aPos;
+	vec4 distPos = vec4(pos_clip.x, pos_clip.y +height, pos_clip.z, pos_clip.w);
 	
-	vec4 pos_clip = uMatModel * uMatView * uProjMat * distPos;
+	
 	gl_Position = distPos;
 	
 	
@@ -60,7 +63,7 @@ void main(){
 	//Normal Pipeline
 
 	
-	float hUp = texture(uTex, vec2(	posSample.x, posSample.y + sampleSizeX)).z; 
+	float hUp = texture(uTex, vec2(posSample.x, posSample.y + sampleSizeX)).z; 
 	float hDn = texture(uTex, vec2(posSample.x, posSample.y - sampleSizeX)).z;  
 	float hRt = texture(uTex, vec2(posSample.x + sampleSizeY, posSample.y)).z; 
 	float hLt = texture(uTex, vec2(posSample.x - sampleSizeY, posSample.y)).z;
@@ -69,6 +72,7 @@ void main(){
 	vec3 h = vec3(2, hRt - hLt, 0);
 	n = vec4(cross(v, h), 1.0);
 	vNormal = vec4(aNormal, 0.0);
+	vNormal = n;
 	
 	
 	//translate normal into camera space
@@ -124,7 +128,7 @@ void main(){
    vec4 specularColor = vec4(1.0);
    
 	//NDC
-    vTexCoord = aPos * .5 + .5;
+   
     
     //
    
@@ -134,19 +138,19 @@ void main(){
 //PER_FRAGMENT, VIEW_SPACE   
 	
 	//Varyings
-	//vNormal = vec4(norm_camera, 0.0);
-	//vPosition = pos_camera;
-    //vCameraPos = camera_camera;
-	//vMat = uMatView;
+	vNormal = vec4(norm_camera, 0.0);
+	vPosition = pos_camera;
+    vCameraPos = camera_camera;
+	vMat = uMatView;
 	
 //____________________________________
 //PER_FRAGMENT, Object_SPACE 
    
    //Varyings
-   vNormal = vec4(aNormal, 0.0);
-   vPosition = aPos;
-   vCameraPos = camera_object;
-   vMat = modelMatInv;
+   //vNormal = vec4(aNormal, 0.0);
+   //vPosition = aPos;
+   //vCameraPos = camera_object;
+   //vMat = modelMatInv;
 
 //___________________________________
 //COMMON VARYINGS

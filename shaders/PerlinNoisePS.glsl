@@ -83,7 +83,7 @@ float perlin(float x, float y) {
 
 float fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout float height)
 {
-	float scale =2;// 5 * (mousePos.y); //Size of the waves
+	float scale = 5 * (mousePos.y); //Size of the waves
 	int seed = 98;
 	float lacunarity = 2; //<1
 	float persistance = .5; //0-1

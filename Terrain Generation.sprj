@@ -166,16 +166,16 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="gTerrain 2" item="pipe" />
+		<entry type="property" name="PerlinNoisePass" item="pipe" />
 		<entry type="file" name="TerrainPass" shader="vs" />
 		<entry type="file" name="TerrainPass" shader="ps" />
 		<entry type="file" name="PerlinNoisePass" shader="vs" />
 		<entry type="file" name="PerlinNoisePass" shader="ps" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
-			<distance>9</distance>
-			<pitch>20</pitch>
-			<yaw>0</yaw>
+			<distance>6</distance>
+			<pitch>85</pitch>
+			<yaw>115</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
