@@ -173,9 +173,9 @@
 		<entry type="file" name="Clouds" shader="ps" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
-			<distance>2</distance>
-			<pitch>35</pitch>
-			<yaw>354</yaw>
+			<distance>4</distance>
+			<pitch>-9</pitch>
+			<yaw>6</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
