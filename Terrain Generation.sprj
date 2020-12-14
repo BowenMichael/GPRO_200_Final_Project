@@ -43,7 +43,7 @@
 				<item name="gTerrain 2" type="model">
 					<filepath>obj\256 Vertice plane.obj</filepath>
 					<grouponly>false</grouponly>
-					<y>0.433778286</y>
+					<y>0.19024229</y>
 				</item>
 			</items>
 			<itemvalues />
@@ -214,9 +214,9 @@
 		<entry type="file" name="TerrainPass" shader="ps" />
 		<entry type="pinned" name="uViewProjMat" owner="PerlinNoisePass" />
 		<entry type="camera" fp="false">
-			<distance>2</distance>
-			<pitch>24</pitch>
-			<yaw>253</yaw>
+			<distance>6</distance>
+			<pitch>12</pitch>
+			<yaw>268</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
