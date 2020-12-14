@@ -1,4 +1,8 @@
 #version 450
+//   Copyright 2020 Michael Bowen, Colin Deane
+//
+//		File name: TerrainPassPS
+//		Purpose: Apply color and lighting to terrain mesh.
 
 //Uniforms
 uniform sampler2D uTex;

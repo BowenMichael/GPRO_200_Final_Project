@@ -1,4 +1,8 @@
 #version 450
+//   Copyright 2020 Michael Bowen, Colin Deane
+//
+//		File name: PerlinNoisePassVS
+//		Purpose: Set up the texCoord NDC
 
 //Uniforms
 uniform mat4 uViewMat;

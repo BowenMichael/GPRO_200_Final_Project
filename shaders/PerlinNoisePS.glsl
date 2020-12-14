@@ -1,4 +1,9 @@
 #version 450
+//   Copyright 2020 Michael Bowen, Colin Deane
+//
+//		File name: PerlinNoisePassPS
+//		Purpose: Set up perlin noise texture
+
 #define PI 3.14159265358979323846
 
 uniform vec2 uRes;

@@ -1,4 +1,9 @@
 #version 450
+//   Copyright 2020 Michael Bowen, Colin Deane
+//
+//		File name: TerrainPassVS
+//		Purpose: Set the vertex positions based on the height from the height map texutre
+//				And Calculate the approximate normal for the new vertex position.
 
 //Uniform
 uniform mat4 uMatView;
