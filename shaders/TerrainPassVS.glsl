@@ -32,7 +32,7 @@ out float vHeight;
 uniform vec2 mousePos;
 
 //global vars
-bool toggleTime = true;
+bool toggleTime = false;
 
  // http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts
   vec3 orthogonal(vec3 v) {
