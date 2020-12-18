@@ -123,7 +123,7 @@ void main() {
   	
   	float weightGrass = 0;
   	float weightStone = 0;
-  	//Colors
+  	//ColorsHeightwaterHeight)
   	if(vHeight <= stoneHeight){  
   		weightGrass = 1;
   		weightStone = 0;
@@ -136,6 +136,12 @@ void main() {
   	}
   	float weightSnow = 1.0 - weightGrass - weightStone;
 	vec4 phongColor = weightGrass * vec4(0.0, 1.0, 0.0, 1.0) + weightStone * vec4(vec3(.5), 1.0) + weightSnow * vec4(1.0);
+	if(vHeight <= 0.0){
+		phongColor = vec4(0.0, 0.0, 1.0, 1.0);
+	}
+	if(vHeight >= 1.0){
+		phongColor = vec4(1.0, 0.0, 0.0, 1.0);
+	}
 	for(int i = 0; i < maxLights; i++)
 	{
 		//Creates a temporary sLight to give a point in the relevat space

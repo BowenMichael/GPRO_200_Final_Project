@@ -87,10 +87,8 @@ float perlin(float x, float y) {
     ix1 = interpolate(n0, n1, sx);
 
     value = interpolate(ix0, ix1, sy);
-    
-    value = (value + 1.0f) * 0.5f;
-    value = value > 1.0 ? 1.0 : value;
-    value = value > 0.0 ? 0.0 : value;
+    value = clamp(value, 0.0, 1.0);
+
     return value;
 }
 
@@ -108,9 +106,9 @@ float fbm(in vec2 texCoord, inout float frequency, inout float amplitude, inout 
 	int seed = 98; //each value has drastically diffrent results
 	float lacunarity = 2 ; // increasing amplitude<1
 	float persistance = .5; //decreasing lacunarity0-1
-	vec2 sampleXY = vTexCoord.xy * scale * frequency + seed ; //position to be sampled
+	vec2 sampleXY = (vTexCoord.xy + (uTime * .15 )) * scale * frequency + seed ; //position to be sampled
  	//sampling
-	float perlinValue = perlin(sampleXY.x, sampleXY.y) *.5 +.1 ;
+	float perlinValue = perlin(sampleXY.x, sampleXY.y) ;
 	height += perlinValue * amplitude;
 	//incrementing amplitude and frequency	
 	amplitude *= persistance;
@@ -139,5 +137,5 @@ void main() {
 	
 
 	//height = mix(1.0, -1.0, height);
-   outNoise.z = height*2;
+   outNoise.z = height;
 }

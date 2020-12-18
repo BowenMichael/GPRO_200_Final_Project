@@ -60,7 +60,7 @@ void main(){
 	if(toggleTime){
 		t = (uTime * .15 ); //Size of the waves
 	}
-	vec2 posSample = vec2(vTexCoord.x, vTexCoord.z + t); //in texture space
+	vec2 posSample = vec2(vTexCoord.x, vTexCoord.z); //in texture space
 	//Distorted Position
 	float height = texture(uTex, posSample).z; //z component is for the terrain map
 	vec4 pos_camera = uMatModel * uMatView * aPos; //camera space position
