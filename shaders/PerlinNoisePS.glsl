@@ -15,7 +15,7 @@ in vec4 vTexCoord;
 out vec4 outNoise;
 
 //global vars
-bool toggleScale = true;
+bool toggleScale = false;
 
 //Aleternitave perlin function: https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
 
@@ -60,6 +60,10 @@ float dotGridGradient(int ix, int iy, float x, float y) {
 
 // Compute Perlin noise at coordinates x, y
 float perlin(float x, float y) {
+    //set up mix
+    float xmix = 1.0 - x / uRes.x;
+    float ymix = 1.0 - y / uRes.y;
+    
     // Determine grid cell coordinates
     int x0 = int(x);
     int x1 = x0 + 1;
@@ -83,6 +87,10 @@ float perlin(float x, float y) {
     ix1 = interpolate(n0, n1, sx);
 
     value = interpolate(ix0, ix1, sy);
+    
+    value = (value + 1.0f) * 0.5f;
+    value = value > 1.0 ? 1.0 : value;
+    value = value > 0.0 ? 0.0 : value;
     return value;
 }
 
