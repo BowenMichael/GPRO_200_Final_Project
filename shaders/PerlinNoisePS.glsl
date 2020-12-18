@@ -87,7 +87,7 @@ float perlin(float x, float y) {
     ix1 = interpolate(n0, n1, sx);
 
     value = interpolate(ix0, ix1, sy);
-    value = clamp(value, 0.0, 1.0);
+    
 
     return value;
 }
@@ -137,5 +137,6 @@ void main() {
 	
 
 	//height = mix(1.0, -1.0, height);
-   outNoise.z = height;
+	height = clamp(height, 0.0, 1.0);
+   	outNoise.z = height;
 }
