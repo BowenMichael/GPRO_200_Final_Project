@@ -19,7 +19,9 @@ in mat4 vMat;
 in float vHeight;
 
 //output
+out vec4 rtDepthMap;
 out vec4 rtFragColor;
+
 
 //Global variables
 const int maxLights = 1;
@@ -102,6 +104,7 @@ vec4 phongReflectance(in sLight light, in vec4 surface, in vec4 surfaceNorm, in 
 }
 
 void main() {
+	
 	globalAmbientColor = vColor; //globalAmbientColor to a specific texture
 	rtFragColor = globalAmbientColor;
 	vec4 n = normalize(vNormal); //When vNormal is brought into pixel space the size is changed
@@ -154,5 +157,6 @@ void main() {
 
 
    //PER_FRAGMENT Render
+   rtDepthMap = vec4(vec3(vPosition.g * .5 +.5), 1.0);
    rtFragColor = phongColor; 
 }

@@ -68,6 +68,7 @@ void main(){
 	//cliping space with height added to the y axis
 	vec4 distPos = vec4(pos_clip.x, pos_clip.y + height, pos_clip.z, pos_clip.w); 
 	gl_Position = distPos;
+	//gl_Position = pos_camera;
 	
 	//Normal Pipeline
 	//Assisted from source: https://www.leadwerks.com/community/topic/16244-calculate-normals-from-heightmap/

@@ -38,7 +38,8 @@
 				<item value="Normal" semantic="NORMAL" />
 				<item value="Texcoord" semantic="TEXCOORD0" />
 			</inputlayout>
-			<rendertexture />
+			<rendertexture name="DepthMapRT" />
+			<rendertexture name="SceneRT" />
 			<items>
 				<item name="gTerrain 2" type="model">
 					<filepath>obj\256 Vertice plane.obj</filepath>
@@ -65,6 +66,19 @@
 				<variable type="float4x4" name="uProjMat" system="Projection" />
 				<variable type="float2" name="mousePos" system="MousePosition" />
 			</variables>
+			<macros />
+		</pass>
+		<pass name="ShadowPass" type="shader" active="true">
+			<shader type="vs" path="shaders\ShadowPassVS.comp" entry="main" />
+			<shader type="ps" path="shaders\ShadowPassPS.comp" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture />
+			<items />
+			<itemvalues />
 			<macros />
 		</pass>
 		<pass name="Lighting" type="shader" active="false">
@@ -140,7 +154,7 @@
 			<itemvalues />
 			<macros />
 		</pass>
-		<pass name="Clouds" type="shader" active="true">
+		<pass name="Clouds" type="shader" active="false">
 			<shader type="vs" path="shaders\CloudsVS.glsl" entry="main" />
 			<shader type="ps" path="shaders\CloudsPS.glsl" entry="main" />
 			<inputlayout>
@@ -204,16 +218,21 @@
 		<object type="rendertexture" name="WorleyNoiseRT" fsize="637,646" clear="true">
 			<bind slot="1" name="Clouds" />
 		</object>
+		<object type="rendertexture" name="DepthMapRT" fsize="724,732" clear="true" />
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="PerlinNoisePass" item="pipe" />
-		<entry type="file" name="PerlinNoisePass" shader="vs" />
-		<entry type="file" name="PerlinNoisePass" shader="ps" />
+		<entry type="property" name="TerrainPass" item="pipe" />
+		<entry type="file" name="TerrainPass" shader="vs" />
+		<entry type="file" name="TerrainPass" shader="ps" />
+		<entry type="file" name="CloudNoisePass" shader="vs" />
+		<entry type="file" name="CloudNoisePass" shader="ps" />
+		<entry type="file" name="ShadowPass" shader="vs" />
+		<entry type="file" name="ShadowPass" shader="ps" />
 		<entry type="camera" fp="false">
-			<distance>3</distance>
-			<pitch>32</pitch>
-			<yaw>259</yaw>
+			<distance>5</distance>
+			<pitch>56</pitch>
+			<yaw>80</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
